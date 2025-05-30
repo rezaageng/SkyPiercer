@@ -10,4 +10,12 @@ public class SceneManage : MonoBehaviour
     {
         SceneManager.LoadScene("NamaScene"); // Ganti dengan nama scene kamu
     }
+    public void MainMenu(){
+        SceneManager.LoadScene("MainMenu"); // Ganti dengan nama scene kamu
+    }
+    
+    public void Credit()
+{
+    SceneManager.LoadScene("Credit"); // Ganti dengan nama scene kamu
+}
 }
