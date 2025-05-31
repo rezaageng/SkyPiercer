@@ -179,7 +179,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: afc17b79786d61649830307e69bccd36, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bb83b9699b6f1584d86d773b6395594f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -391,7 +391,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 30e2c8f3026e8f049a30970a2180eb93, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3bd2e4a1447ce814daea0a5f8a2b7d29, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -798,7 +798,7 @@ RectTransform:
   m_GameObject: {fileID: 1592156264}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 811677321}
@@ -875,7 +875,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1358073437}
         m_TargetAssemblyTypeName: SceneManage, Assembly-CSharp
-        m_MethodName: GantiScene
+        m_MethodName: gamePlay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -905,7 +905,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6550fa4abec863e429301e4ba574ce28, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5ebfe494c79a9324b938855c5bf864b9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1037,7 +1037,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fa82ef157e1429e43ad7ebfa11c2e358, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eb980d153edc45c48b2f83d8ca4a86c7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

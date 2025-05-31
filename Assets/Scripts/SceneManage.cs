@@ -15,7 +15,11 @@ public class SceneManage : MonoBehaviour
     }
     
     public void Credit()
-{
-    SceneManager.LoadScene("Credit"); // Ganti dengan nama scene kamu
-}
+    {
+        SceneManager.LoadScene("Credit"); // Ganti dengan nama scene kamu
+    }
+    public void gamePlay()
+    {
+        SceneManager.LoadScene("GamePlay"); // Ganti dengan nama scene kamu
+    }
 }
