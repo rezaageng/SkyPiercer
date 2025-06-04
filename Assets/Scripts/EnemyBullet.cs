@@ -8,6 +8,8 @@ public class EnemyBullet : MonoBehaviour
     Vector2 direction;             // Arah peluru
     bool isReady = false;          // Status peluru (siap jalan)
 
+
+
     void Awake()
     {
         // Inisialisasi sudah dilakukan di atas
@@ -39,4 +41,13 @@ public class EnemyBullet : MonoBehaviour
             }
         }
     }
+
+  void OnTriggerEnter2D(Collider2D col)
+{
+    if (col.tag == "PlayerShipTag")
+    {
+        Destroy(gameObject);
+    }
+}
+
 }

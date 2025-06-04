@@ -19,6 +19,8 @@ public class PlayerControl : MonoBehaviour
     public float fireRate = 0.2f;
     private float nextFireTime = 0f;
 
+    public GameObject Explode;
+
     void Start()
     {
         // Hitung batas layar
@@ -85,4 +87,29 @@ public class PlayerControl : MonoBehaviour
         Instantiate(PlayerBulletGo, BulletPosition_1.transform.position, Quaternion.identity);
         Instantiate(PlayerBulletGo, BulletPosition_2.transform.position, Quaternion.identity);
     }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.CompareTag("EnemyShipTag") || col.CompareTag("EnemyBulletTag"))
+        {
+              if (Application.isPlaying)
+                    {
+                        OnDestroy(); // Panggil OnDestroy untuk efek ledakan
+                        Destroy(gameObject);
+                    }
+                    else
+                    {
+                        #if UNITY_EDITOR
+                                DestroyImmediate(gameObject); // Aman saat Edit Mode
+                        #endif
+                        }
+        }
+    }
+
+    void OnDestroy()
+    {
+        GameObject explode = (GameObject)Instantiate(Explode);
+        explode.transform.position = transform.position;
+    }
+
 }

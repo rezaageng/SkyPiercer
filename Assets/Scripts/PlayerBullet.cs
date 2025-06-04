@@ -15,11 +15,20 @@ public class PlayerBullet : MonoBehaviour
 
         // Dapatkan batas atas layar
         Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));
-        
+
         // Hapus peluru jika melewati batas atas
         if (position.y > max.y)
         {
             Destroy(gameObject);
         }
     }
+    
+  void OnTriggerEnter2D(Collider2D col)
+{
+    if (col.CompareTag("EnemyShipTag"))
+    {
+        Destroy(gameObject);
+    }
+}
+
 }
