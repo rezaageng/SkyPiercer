@@ -20,6 +20,6 @@ public class SceneManage : MonoBehaviour
     }
     public void gamePlay()
     {
-        SceneManager.LoadScene("GamePlay"); // Ganti dengan nama scene kamu
+        SceneManager.LoadScene("GamePlay1"); // Ganti dengan nama scene kamu
     }
 }

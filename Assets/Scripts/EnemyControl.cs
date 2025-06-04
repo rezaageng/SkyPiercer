@@ -4,20 +4,28 @@ using UnityEngine;
 
 public class EnemyControl : MonoBehaviour
 {
-    public float speed = 1f; // Kecepatan gerakan musuh
+    public float speed; // Kecepatan gerakan musuh
     public GameObject Explode;
 
+    GameScore gameScore; // Langsung refer ke script, bukan GameObject
+
+    void Start()
+    {
+        speed = Random.Range(0.5f, 2.0f);
+
+        GameObject scoreUIObj = GameObject.FindGameObjectWithTag("ScoreTextTag");
+        if (scoreUIObj != null)
+        {
+            gameScore = scoreUIObj.GetComponent<GameScore>();
+        }
+    }
 
     void Update()
     {
-        // Ambil posisi saat ini (dalam Vector2)
         Vector2 position = transform.position;
-
-        // Gerakkan musuh ke bawah
         position.y -= speed * Time.deltaTime;
         transform.position = position;
 
-        // Hapus musuh jika melewati batas bawah layar
         Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));
         if (transform.position.y < min.y)
         {
@@ -27,27 +35,22 @@ public class EnemyControl : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.tag == "PlayerShipTag" || col.tag == "PlayerBulletTag")
+        if (col.CompareTag("PlayerShipTag") || col.CompareTag("PlayerBulletTag"))
         {
-              if (Application.isPlaying)
-                    {
-                        OnDestroy(); // Panggil OnDestroy untuk efek ledakan
-                        Destroy(gameObject);
-                    }
-                    else
-                    {
-                        #if UNITY_EDITOR
-                                DestroyImmediate(gameObject); // Aman saat Edit Mode
-                        #endif
-                        }
-                                
+            // Tampilkan ledakan
+            if (Explode != null)
+            {
+                Instantiate(Explode, transform.position, Quaternion.identity);
+            }
+
+            // Tambah skor
+            if (gameScore != null)
+            {
+                gameScore.Score += 100;
+            }
+
+            // Hancurkan musuh
+            Destroy(gameObject);
         }
     }
-
- void OnDestroy()
-    {
-        GameObject explode = (GameObject)Instantiate(Explode);
-        explode.transform.position = transform.position;
-    }
-
 }
