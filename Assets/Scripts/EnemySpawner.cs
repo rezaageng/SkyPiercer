@@ -15,27 +15,24 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        Vector3 min = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
-        Vector3 max = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 0));
+        // Ambil batas bawah kiri dan atas kanan layar (x dan y saja)
+        Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));
+        Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));
 
         GameObject enemy = Instantiate(enemyGo);
-        enemy.transform.position = new Vector3(Random.Range(min.x, max.x), max.y, 0);
+        
+        // Tempatkan musuh secara acak di atas layar (dalam sumbu X)
+        Vector2 spawnPosition = new Vector2(Random.Range(min.x, max.x), max.y);
+        enemy.transform.position = spawnPosition;
 
         ScheduleNextSpawn();
     }
 
     void ScheduleNextSpawn()
     {
-        float spawnInSeconds;
-
-        if (maxSpawnRateInSecond > 1f)
-        {
-            spawnInSeconds = Random.Range(1f, maxSpawnRateInSecond);
-        }
-        else
-        {
-            spawnInSeconds = 1f;
-        }
+        float spawnInSeconds = (maxSpawnRateInSecond > 1f)
+            ? Random.Range(1f, maxSpawnRateInSecond)
+            : 1f;
 
         Invoke("SpawnEnemy", spawnInSeconds);
     }

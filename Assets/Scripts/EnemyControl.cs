@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class EnemyControl : MonoBehaviour
 {
-    // Kecepatan gerakan musuh
-    public float speed = 1f;
+    public float speed = 1f; // Kecepatan gerakan musuh
 
-    // Update is called once per frame
     void Update()
     {
+        // Ambil posisi saat ini (dalam Vector2)
+        Vector2 position = transform.position;
+        
         // Gerakkan musuh ke bawah
-        Vector3 position = transform.position;
         position.y -= speed * Time.deltaTime;
         transform.position = position;
 
-        // Hapus musuh jika sudah keluar layar (di bawah)
-        Vector3 min = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        // Hapus musuh jika melewati batas bawah layar
+        Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));
         if (transform.position.y < min.y)
         {
             Destroy(gameObject);
