@@ -8,6 +8,9 @@ TagManager:
   - EnemyShipTag
   - PlayerBulletTag
   - EnemyBulletTag
+  - HP2
+  - HP3
+  - HP1
   layers:
   - Default
   - TransparentFX

@@ -21,9 +21,10 @@ public class PlayerControl : MonoBehaviour
 
     public GameObject Explode;
 
+    public HealthDisplay healthDisplay;
+
     void Start()
     {
-        // Hitung batas layar
         Vector2 bottomLeft = Camera.main.ScreenToWorldPoint(new Vector2(0, 0));
         Vector2 topRight = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
 
@@ -44,9 +45,7 @@ public class PlayerControl : MonoBehaviour
         transform.position = newPosition;
 
         if (newPosition != currentPosition)
-        {
             hasMovedThisFrame = true;
-        }
 
         float clampedX = Mathf.Clamp(newPosition.x, min.x, max.x);
         float clampedY = Mathf.Clamp(newPosition.y, min.y, max.y);
@@ -92,24 +91,46 @@ public class PlayerControl : MonoBehaviour
     {
         if (col.CompareTag("EnemyShipTag") || col.CompareTag("EnemyBulletTag"))
         {
-              if (Application.isPlaying)
-                    {
-                        OnDestroy(); // Panggil OnDestroy untuk efek ledakan
-                        Destroy(gameObject);
-                    }
-                    else
-                    {
-                        #if UNITY_EDITOR
-                                DestroyImmediate(gameObject); // Aman saat Edit Mode
-                        #endif
-                        }
+            if (healthDisplay != null && healthDisplay.playerHealth != null)
+            {
+                healthDisplay.playerHealth.TakeDamage(1);
+                healthDisplay.SetHealth(healthDisplay.playerHealth.health);
+
+                if (healthDisplay.playerHealth.health <= 0)
+                {
+                    DestroyPlayer();
+                }
+            }
+            else
+            {
+                // Fallback jika tidak terhubung
+                DestroyPlayer();
+            }
+
+            Destroy(col.gameObject);
         }
     }
 
-    void OnDestroy()
+    void DestroyPlayer()
     {
-        GameObject explode = (GameObject)Instantiate(Explode);
-        explode.transform.position = transform.position;
+        if (Explode != null)
+        {
+            Instantiate(Explode, transform.position, Quaternion.identity);
+        }
+
+        if (Application.isPlaying)
+        {
+            Destroy(gameObject);
+        }
+#if UNITY_EDITOR
+        else
+        {
+            UnityEditor.EditorApplication.isPlaying = false;
+            DestroyImmediate(gameObject);
+        }
+#endif
     }
 
+    // Jangan panggil Instantiate ledakan di OnDestroy (sudah dilakukan di DestroyPlayer)
+    // void OnDestroy() {}
 }
