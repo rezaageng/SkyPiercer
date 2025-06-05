@@ -13,6 +13,8 @@ public class PlayerControl : MonoBehaviour
     public GameObject PlayerBulletGo;
     public GameObject BulletPosition_1;
     public GameObject BulletPosition_2;
+public GameObject gameOverImage; // Drag GameObject UI dari Inspector
+
 
     private bool hasMovedThisFrame = false;
 
@@ -111,25 +113,32 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    void DestroyPlayer()
+void DestroyPlayer()
+{
+    if (Explode != null)
     {
-        if (Explode != null)
-        {
-            Instantiate(Explode, transform.position, Quaternion.identity);
-        }
-
-        if (Application.isPlaying)
-        {
-            Destroy(gameObject);
-        }
-#if UNITY_EDITOR
-        else
-        {
-            UnityEditor.EditorApplication.isPlaying = false;
-            DestroyImmediate(gameObject);
-        }
-#endif
+        Instantiate(Explode, transform.position, Quaternion.identity);
     }
+
+    // Tampilkan gambar Game Over
+    if (gameOverImage != null)
+    {
+        gameOverImage.SetActive(true);
+    }
+
+    if (Application.isPlaying)
+    {
+        Destroy(gameObject);
+    }
+#if UNITY_EDITOR
+    else
+    {
+        UnityEditor.EditorApplication.isPlaying = false;
+        DestroyImmediate(gameObject);
+    }
+#endif
+}
+
 
     // Jangan panggil Instantiate ledakan di OnDestroy (sudah dilakukan di DestroyPlayer)
     // void OnDestroy() {}
