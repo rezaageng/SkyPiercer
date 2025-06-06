@@ -13,8 +13,11 @@ public class PlayerControl : MonoBehaviour
     public GameObject PlayerBulletGo;
     public GameObject BulletPosition_1;
     public GameObject BulletPosition_2;
-public GameObject gameOverImage; // Drag GameObject UI dari Inspector
 
+    public GameObject gameOverImage;
+    public GameObject missionCompleteImage;
+
+    public EnemySpawner enemySpawner;
 
     private bool hasMovedThisFrame = false;
 
@@ -22,8 +25,10 @@ public GameObject gameOverImage; // Drag GameObject UI dari Inspector
     private float nextFireTime = 0f;
 
     public GameObject Explode;
-
     public HealthDisplay healthDisplay;
+
+    private float missionTime = 0f;
+    private bool missionCompleted = false;
 
     void Start()
     {
@@ -39,19 +44,17 @@ public GameObject gameOverImage; // Drag GameObject UI dari Inspector
     void Update()
     {
         hasMovedThisFrame = false;
-
         HandleInput();
 
         Vector2 currentPosition = transform.position;
         Vector2 newPosition = Vector2.MoveTowards(currentPosition, targetPosition, speed * Time.deltaTime);
-        transform.position = newPosition;
+        transform.position = new Vector2(
+            Mathf.Clamp(newPosition.x, min.x, max.x),
+            Mathf.Clamp(newPosition.y, min.y, max.y)
+        );
 
         if (newPosition != currentPosition)
             hasMovedThisFrame = true;
-
-        float clampedX = Mathf.Clamp(newPosition.x, min.x, max.x);
-        float clampedY = Mathf.Clamp(newPosition.y, min.y, max.y);
-        transform.position = new Vector2(clampedX, clampedY);
 
         if (hasMovedThisFrame && Time.time >= nextFireTime)
         {
@@ -63,23 +66,27 @@ public GameObject gameOverImage; // Drag GameObject UI dari Inspector
         {
             FireBullets();
         }
+
+        // Hitung waktu misi
+        missionTime += Time.deltaTime;
+
+        if (!missionCompleted && missionTime >= 30f)
+        {
+            ShowMissionComplete();
+        }
     }
 
     void HandleInput()
     {
-        // Android
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            Vector2 touchPos = Camera.main.ScreenToWorldPoint(touch.position);
-            targetPosition = touchPos;
+            targetPosition = Camera.main.ScreenToWorldPoint(touch.position);
         }
 
-        // PC
         if (Input.GetMouseButton(0))
         {
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            targetPosition = mousePos;
+            targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
     }
 
@@ -105,7 +112,6 @@ public GameObject gameOverImage; // Drag GameObject UI dari Inspector
             }
             else
             {
-                // Fallback jika tidak terhubung
                 DestroyPlayer();
             }
 
@@ -113,33 +119,32 @@ public GameObject gameOverImage; // Drag GameObject UI dari Inspector
         }
     }
 
-void DestroyPlayer()
-{
-    if (Explode != null)
+    void DestroyPlayer()
     {
-        Instantiate(Explode, transform.position, Quaternion.identity);
-    }
+        if (Explode != null)
+        {
+            Instantiate(Explode, transform.position, Quaternion.identity);
+        }
 
-    // Tampilkan gambar Game Over
-    if (gameOverImage != null)
-    {
-        gameOverImage.SetActive(true);
-    }
+        if (gameOverImage != null)
+        {
+            gameOverImage.SetActive(true);
+        }
 
-    if (Application.isPlaying)
-    {
         Destroy(gameObject);
     }
-#if UNITY_EDITOR
-    else
+
+    void ShowMissionComplete()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
-        DestroyImmediate(gameObject);
+        if (enemySpawner != null && enemySpawner.IsSpawningFinished())
+        {
+            if (GameObject.FindGameObjectsWithTag("EnemyShipTag").Length == 0 &&
+                healthDisplay != null &&
+                healthDisplay.playerHealth.health > 0)
+            {
+                missionCompleteImage.SetActive(true);
+                missionCompleted = true;
+            }
+        }
     }
-#endif
-}
-
-
-    // Jangan panggil Instantiate ledakan di OnDestroy (sudah dilakukan di DestroyPlayer)
-    // void OnDestroy() {}
 }

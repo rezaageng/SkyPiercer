@@ -4,24 +4,40 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyGo;              // Prefab musuh yang akan di-spawn
-    public float maxSpawnRateInSecond = 5f; // Waktu awal antar spawn
+    public GameObject enemyGo;
+    public float maxSpawnRateInSecond = 5f;
+
+    private float spawnEndTime = 30f; // Hanya spawn selama 30 detik
+    private float timer = 0f;
+    private bool spawningEnded = false;
 
     void Start()
     {
-        Invoke("SpawnEnemy", maxSpawnRateInSecond);          // Panggil pertama kali
-        InvokeRepeating("IncreaseSpawnRate", 0f, 30f);       // Kurangi waktu spawn setiap 30 detik
+        Invoke("SpawnEnemy", maxSpawnRateInSecond);
+        InvokeRepeating("IncreaseSpawnRate", 0f, 10f); // Percepat setiap 10 detik
+    }
+
+    void Update()
+    {
+        timer += Time.deltaTime;
+
+        // Hentikan spawn setelah 30 detik
+        if (!spawningEnded && timer >= spawnEndTime)
+        {
+            spawningEnded = true;
+            CancelInvoke("SpawnEnemy");
+            CancelInvoke("IncreaseSpawnRate");
+        }
     }
 
     void SpawnEnemy()
     {
-        // Ambil batas bawah kiri dan atas kanan layar (x dan y saja)
+        if (spawningEnded) return;
+
         Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));
         Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));
 
         GameObject enemy = Instantiate(enemyGo);
-        
-        // Tempatkan musuh secara acak di atas layar (dalam sumbu X)
         Vector2 spawnPosition = new Vector2(Random.Range(min.x, max.x), max.y);
         enemy.transform.position = spawnPosition;
 
@@ -30,10 +46,7 @@ public class EnemySpawner : MonoBehaviour
 
     void ScheduleNextSpawn()
     {
-        float spawnInSeconds = (maxSpawnRateInSecond > 1f)
-            ? Random.Range(1f, maxSpawnRateInSecond)
-            : 1f;
-
+        float spawnInSeconds = (maxSpawnRateInSecond > 1f) ? Random.Range(1f, maxSpawnRateInSecond) : 1f;
         Invoke("SpawnEnemy", spawnInSeconds);
     }
 
@@ -43,10 +56,14 @@ public class EnemySpawner : MonoBehaviour
         {
             maxSpawnRateInSecond--;
         }
-
         if (maxSpawnRateInSecond <= 1f)
         {
             CancelInvoke("IncreaseSpawnRate");
         }
+    }
+
+    public bool IsSpawningFinished()
+    {
+        return spawningEnded;
     }
 }
