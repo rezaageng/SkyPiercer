@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -30,6 +31,8 @@ public class PlayerControl : MonoBehaviour
     private float missionTime = 0f;
     private bool missionCompleted = false;
 
+    private bool isPlayerDead = false;
+
     void Start()
     {
         Vector2 bottomLeft = Camera.main.ScreenToWorldPoint(new Vector2(0, 0));
@@ -43,6 +46,8 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
+        if (isPlayerDead) return; // Stop update jika player sudah mati
+
         hasMovedThisFrame = false;
         HandleInput();
 
@@ -98,6 +103,8 @@ public class PlayerControl : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
+        if (isPlayerDead) return;
+
         if (col.CompareTag("EnemyShipTag") || col.CompareTag("EnemyBulletTag"))
         {
             if (healthDisplay != null && healthDisplay.playerHealth != null)
@@ -121,30 +128,53 @@ public class PlayerControl : MonoBehaviour
 
     void DestroyPlayer()
     {
+        if (isPlayerDead) return;
+        isPlayerDead = true;
+
         if (Explode != null)
-        {
             Instantiate(Explode, transform.position, Quaternion.identity);
-        }
 
         if (gameOverImage != null)
-        {
             gameOverImage.SetActive(true);
-        }
 
-        Destroy(gameObject);
+        // Jalankan coroutine untuk restart scene
+        StartCoroutine(RestartAfterDelay(3f));
+    }
+
+    IEnumerator RestartAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     void ShowMissionComplete()
     {
-        if (enemySpawner != null && enemySpawner.IsSpawningFinished())
+        if (!missionCompleted && enemySpawner != null && enemySpawner.IsSpawningFinished())
         {
             if (GameObject.FindGameObjectsWithTag("EnemyShipTag").Length == 0 &&
                 healthDisplay != null &&
                 healthDisplay.playerHealth.health > 0)
             {
-                missionCompleteImage.SetActive(true);
+                if (missionCompleteImage != null)
+                    missionCompleteImage.SetActive(true);
+
                 missionCompleted = true;
+
+                // Pindah ke scene selanjutnya setelah delay
+                Invoke("LoadNextScene", 3f);
             }
         }
+    }
+
+    void LoadNextScene()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        if (currentScene == "GamePlay1")
+            SceneManager.LoadScene("GamePlay2");
+        else if (currentScene == "GamePlay2")
+            SceneManager.LoadScene("GamePlay3");
+        else
+            SceneManager.LoadScene("MainMenu");
     }
 }
