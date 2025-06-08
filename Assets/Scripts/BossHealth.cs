@@ -37,11 +37,19 @@ public class BossHealth : MonoBehaviour
 
         if (gameScore != null)
         {
-            gameScore.Score += 1000; // Award points for defeating the boss
+            gameScore.Score += 1000;
         }
 
-        Destroy(gameObject); // Destroy the boss
+        // --- NEW: Directly trigger level completion ---
+        PlayerControl playerControl = FindObjectOfType<PlayerControl>();
+        if (playerControl != null)
+        {
+            playerControl.TriggerLevelComplete();
+        }
+
+        Destroy(gameObject);
     }
+
 
     // Detect collision with player bullets
     void OnTriggerEnter2D(Collider2D col)

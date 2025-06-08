@@ -7,10 +7,6 @@ public class PlayerControl : MonoBehaviour
 {
     public float speed = 5f;
 
-    private Vector2 min;
-    private Vector2 max;
-    private Vector2 targetPosition;
-
     public GameObject PlayerBulletGo;
     public GameObject BulletPosition_1;
     public GameObject BulletPosition_2;
@@ -19,22 +15,23 @@ public class PlayerControl : MonoBehaviour
     public GameObject missionCompleteImage;
 
     public EnemySpawner enemySpawner;
-
-    private bool hasMovedThisFrame = false;
-
     public float fireRate = 0.2f;
-    private float nextFireTime = 0f;
-
     public GameObject Explode;
     public HealthDisplay healthDisplay;
 
-    private float missionTime = 0f;
+    private Vector2 min, max, targetPosition;
+    private bool hasMovedThisFrame = false;
+    private float nextFireTime = 0f;
     private bool missionCompleted = false;
-
     private bool isPlayerDead = false;
+
+    private float originalFireRate;
+    private Coroutine bulletBuffCoroutine;
 
     void Start()
     {
+        originalFireRate = fireRate;
+
         Vector2 bottomLeft = Camera.main.ScreenToWorldPoint(new Vector2(0, 0));
         Vector2 topRight = Camera.main.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
 
@@ -71,71 +68,32 @@ public class PlayerControl : MonoBehaviour
         {
             FireBullets();
         }
-
-        // --- Mission Completion Logic ---
-        if (!missionCompleted)
-        {
-            string currentScene = SceneManager.GetActiveScene().name;
-            bool levelComplete = false;
-
-            if (currentScene == "GamePlay1")
-            {
-                missionTime += Time.deltaTime;
-                if (missionTime >= 30f && enemySpawner != null && enemySpawner.IsSpawningFinished() && GameObject.FindGameObjectsWithTag("EnemyShipTag").Length == 0)
-                {
-                    levelComplete = true;
-                }
-            }
-            else if (currentScene == "GamePlay2" || currentScene == "GamePlay3")
-            {
-                if (enemySpawner != null && enemySpawner.IsBossSpawned() && enemySpawner.spawnedBoss == null)
-                {
-                    levelComplete = true;
-                }
-            }
-
-            if (levelComplete)
-            {
-                missionCompleted = true;
-
-                if (missionCompleteImage != null)
-                    missionCompleteImage.SetActive(true);
-
-                // Autosave progress
-                int levelNumber = 0;
-                if (int.TryParse(currentScene.Substring("GamePlay".Length), out levelNumber))
-                {
-                    int highestLevelCompleted = PlayerPrefs.GetInt("HighestLevelCompleted", 0);
-                    if (levelNumber > highestLevelCompleted)
-                    {
-                        PlayerPrefs.SetInt("HighestLevelCompleted", levelNumber);
-                        PlayerPrefs.Save();
-                    }
-                }
-
-                Invoke("LoadNextScene", 3f);
-            }
-        }
     }
 
-    void HandleInput()
+    public void TriggerLevelComplete()
     {
-        if (Input.touchCount > 0)
+        if (missionCompleted || isPlayerDead) return;
+
+        missionCompleted = true;
+
+        if (missionCompleteImage != null)
+            missionCompleteImage.SetActive(true);
+
+        // Autosave progress
+        string currentScene = SceneManager.GetActiveScene().name;
+        int levelNumber = 0;
+        if (int.TryParse(currentScene.Substring("GamePlay".Length), out levelNumber))
         {
-            Touch touch = Input.GetTouch(0);
-            targetPosition = Camera.main.ScreenToWorldPoint(touch.position);
+            int highestLevelCompleted = PlayerPrefs.GetInt("HighestLevelCompleted", 0);
+            if (levelNumber > highestLevelCompleted)
+            {
+                PlayerPrefs.SetInt("HighestLevelCompleted", levelNumber);
+                PlayerPrefs.Save();
+                Debug.Log("Game Saved! Highest level completed: " + levelNumber);
+            }
         }
 
-        if (Input.GetMouseButton(0))
-        {
-            targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-    }
-
-    void FireBullets()
-    {
-        Instantiate(PlayerBulletGo, BulletPosition_1.transform.position, Quaternion.identity);
-        Instantiate(PlayerBulletGo, BulletPosition_2.transform.position, Quaternion.identity);
+        Invoke("LoadNextScene", 3f);
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -161,6 +119,64 @@ public class PlayerControl : MonoBehaviour
 
             Destroy(col.gameObject);
         }
+
+        if (col.CompareTag("Buff"))
+        {
+            Buff buff = col.GetComponent<Buff>();
+            if (buff != null)
+            {
+                ApplyBuff(buff.type);
+            }
+            Destroy(col.gameObject);
+        }
+    }
+
+    void ApplyBuff(Buff.BuffType type)
+    {
+        if (type == Buff.BuffType.Health)
+        {
+            if (healthDisplay != null && healthDisplay.playerHealth != null)
+            {
+                healthDisplay.playerHealth.health = Mathf.Min(healthDisplay.playerHealth.health + 1, healthDisplay.playerHealth.maxHealth);
+                healthDisplay.SetHealth(healthDisplay.playerHealth.health);
+            }
+        }
+        else if (type == Buff.BuffType.Bullet)
+        {
+            if (bulletBuffCoroutine != null)
+            {
+                StopCoroutine(bulletBuffCoroutine);
+            }
+            bulletBuffCoroutine = StartCoroutine(BulletBuffCoroutine());
+        }
+    }
+
+    IEnumerator BulletBuffCoroutine()
+    {
+        fireRate = originalFireRate / 2;
+        yield return new WaitForSeconds(10f);
+        fireRate = originalFireRate;
+        bulletBuffCoroutine = null;
+    }
+
+    void HandleInput()
+    {
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            targetPosition = Camera.main.ScreenToWorldPoint(touch.position);
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+    }
+
+    void FireBullets()
+    {
+        Instantiate(PlayerBulletGo, BulletPosition_1.transform.position, Quaternion.identity);
+        Instantiate(PlayerBulletGo, BulletPosition_2.transform.position, Quaternion.identity);
     }
 
     void DestroyPlayer()

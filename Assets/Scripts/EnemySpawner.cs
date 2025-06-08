@@ -40,7 +40,25 @@ public class EnemySpawner : MonoBehaviour
                 SpawnBoss();
             }
         }
+
+        // --- NEW: Level 1 Completion Check ---
+        // This check is only for Level 1, as bosses handle completion in other levels.
+        string sceneName = SceneManager.GetActiveScene().name;
+        if (sceneName == "GamePlay1" && spawningEnded)
+        {
+            // Check if all enemies with the tag are defeated.
+            if (GameObject.FindGameObjectWithTag("EnemyShipTag") == null)
+            {
+                PlayerControl playerControl = FindObjectOfType<PlayerControl>();
+                if (playerControl != null)
+                {
+                    playerControl.TriggerLevelComplete();
+                    enabled = false; // Disable this script to prevent it from running again.
+                }
+            }
+        }
     }
+
 
     void SpawnBoss()
     {

@@ -755,7 +755,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyGo: {fileID: 6335477594885853588, guid: 9f607c79cb6369f46af09841994b33c9, type: 3}
+  bossPrefab: {fileID: 0}
   maxSpawnRateInSecond: 5
+  spawnedBoss: {fileID: 0}
 --- !u!4 &784214702
 Transform:
   m_ObjectHideFlags: 0
