@@ -1096,7 +1096,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyGo: {fileID: 601201792155783559, guid: 03add504a08be904ab9c046be9e00d5c, type: 3}
+  bossPrefab: {fileID: 6708085489191793860, guid: a663465d7f47f6a40b92fdfd106121fd, type: 3}
   maxSpawnRateInSecond: 5
+  spawnedBoss: {fileID: 0}
 --- !u!4 &1039054453
 Transform:
   m_ObjectHideFlags: 0

@@ -46,7 +46,7 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
-        if (isPlayerDead) return; // Stop update jika player sudah mati
+        if (isPlayerDead) return;
 
         hasMovedThisFrame = false;
         HandleInput();
@@ -72,12 +72,49 @@ public class PlayerControl : MonoBehaviour
             FireBullets();
         }
 
-        // Hitung waktu misi
-        missionTime += Time.deltaTime;
-
-        if (!missionCompleted && missionTime >= 30f)
+        // --- Mission Completion Logic ---
+        if (!missionCompleted)
         {
-            ShowMissionComplete();
+            string currentScene = SceneManager.GetActiveScene().name;
+            bool levelComplete = false;
+
+            if (currentScene == "GamePlay1")
+            {
+                missionTime += Time.deltaTime;
+                if (missionTime >= 30f && enemySpawner != null && enemySpawner.IsSpawningFinished() && GameObject.FindGameObjectsWithTag("EnemyShipTag").Length == 0)
+                {
+                    levelComplete = true;
+                }
+            }
+            else if (currentScene == "GamePlay2" || currentScene == "GamePlay3")
+            {
+                if (enemySpawner != null && enemySpawner.IsBossSpawned() && enemySpawner.spawnedBoss == null)
+                {
+                    levelComplete = true;
+                }
+            }
+
+            if (levelComplete)
+            {
+                missionCompleted = true;
+
+                if (missionCompleteImage != null)
+                    missionCompleteImage.SetActive(true);
+
+                // Autosave progress
+                int levelNumber = 0;
+                if (int.TryParse(currentScene.Substring("GamePlay".Length), out levelNumber))
+                {
+                    int highestLevelCompleted = PlayerPrefs.GetInt("HighestLevelCompleted", 0);
+                    if (levelNumber > highestLevelCompleted)
+                    {
+                        PlayerPrefs.SetInt("HighestLevelCompleted", levelNumber);
+                        PlayerPrefs.Save();
+                    }
+                }
+
+                Invoke("LoadNextScene", 3f);
+            }
         }
     }
 
@@ -137,7 +174,6 @@ public class PlayerControl : MonoBehaviour
         if (gameOverImage != null)
             gameOverImage.SetActive(true);
 
-        // Jalankan coroutine untuk restart scene
         StartCoroutine(RestartAfterDelay(3f));
     }
 
@@ -145,44 +181,6 @@ public class PlayerControl : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    void ShowMissionComplete()
-    {
-        if (!missionCompleted && enemySpawner != null && enemySpawner.IsSpawningFinished())
-        {
-            if (GameObject.FindGameObjectsWithTag("EnemyShipTag").Length == 0 &&
-                healthDisplay != null &&
-                healthDisplay.playerHealth.health > 0)
-            {
-                missionCompleteImage?.SetActive(true);
-
-                missionCompleted = true;
-
-                // --- AUTOSAVE LOGIC START ---
-                string currentScene = SceneManager.GetActiveScene().name;
-                int levelNumber = 0;
-                if (currentScene.StartsWith("GamePlay"))
-                {
-                    int.TryParse(currentScene.Substring("GamePlay".Length), out levelNumber);
-                }
-
-                if (levelNumber > 0)
-                {
-                    int highestLevelCompleted = PlayerPrefs.GetInt("HighestLevelCompleted", 0);
-                    if (levelNumber > highestLevelCompleted)
-                    {
-                        PlayerPrefs.SetInt("HighestLevelCompleted", levelNumber);
-                        PlayerPrefs.Save();
-                        Debug.Log("Game Saved! Highest level completed: " + levelNumber);
-                    }
-                }
-                // --- AUTOSAVE LOGIC END ---
-
-                // Pindah ke scene selanjutnya setelah delay
-                Invoke("LoadNextScene", 3f);
-            }
-        }
     }
 
     void LoadNextScene()
