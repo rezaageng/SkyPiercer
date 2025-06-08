@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    float speed = 8f;              // Kecepatan peluru
-    Vector2 direction;             // Arah peluru
-    bool isReady = false;          // Status peluru (siap jalan)
+    readonly float speed = 8f;
+    Vector2 direction;
+    bool isReady = false;
 
 
 
-    void Awake()
-    {
-        // Inisialisasi sudah dilakukan di atas
-    }
 
-    // Set arah tembakan dari luar
     public void SetDirection(Vector2 dir)
     {
-        direction = dir.normalized;  // Normalisasi agar konsisten
+        direction = dir.normalized;
         isReady = true;
     }
 
@@ -26,12 +21,10 @@ public class EnemyBullet : MonoBehaviour
     {
         if (isReady)
         {
-            // Gerakkan peluru
             Vector2 position = transform.position;
             position += direction * speed * Time.deltaTime;
             transform.position = position;
 
-            // Hancurkan jika keluar dari layar
             Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));
             Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));
 
@@ -42,12 +35,12 @@ public class EnemyBullet : MonoBehaviour
         }
     }
 
-  void OnTriggerEnter2D(Collider2D col)
-{
-    if (col.tag == "PlayerShipTag")
+    void OnTriggerEnter2D(Collider2D col)
     {
-        Destroy(gameObject);
+        if (col.tag == "PlayerShipTag")
+        {
+            Destroy(gameObject);
+        }
     }
-}
 
 }

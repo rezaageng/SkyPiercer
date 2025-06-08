@@ -7,21 +7,20 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyGo;
     public float maxSpawnRateInSecond = 5f;
 
-    private float spawnEndTime = 30f; // Hanya spawn selama 30 detik
+    private float spawnEndTime = 30f;
     private float timer = 0f;
     private bool spawningEnded = false;
 
     void Start()
     {
         Invoke("SpawnEnemy", maxSpawnRateInSecond);
-        InvokeRepeating("IncreaseSpawnRate", 0f, 10f); // Percepat setiap 10 detik
+        InvokeRepeating("IncreaseSpawnRate", 0f, 10f);
     }
 
     void Update()
     {
         timer += Time.deltaTime;
 
-        // Hentikan spawn setelah 30 detik
         if (!spawningEnded && timer >= spawnEndTime)
         {
             spawningEnded = true;

@@ -14,7 +14,6 @@ public class MusicToggle : MonoBehaviour
     {
         buttonImage = GetComponent<Image>();
 
-        // Ambil status mute dari PlayerPrefs (opsional, agar bisa disimpan antar scene)
         isMuted = PlayerPrefs.GetInt("Muted", 0) == 1;
         UpdateUI();
     }

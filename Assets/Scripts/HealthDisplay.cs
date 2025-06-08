@@ -7,15 +7,13 @@ public class HealthDisplay : MonoBehaviour
     public Sprite fullHealth;
     public Image[] hearts;
 
-    public PlayerHealth playerHealth; // Referensi ke script PlayerHealth
+    public PlayerHealth playerHealth;
 
     void Start()
     {
-        // Set tampilan awal sesuai health awal
         SetHealth(playerHealth.health);
     }
 
-    // Method untuk update tampilan hati berdasarkan nilai health
     public void SetHealth(int health)
     {
         int maxHealth = playerHealth.maxHealth;

@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class Destroyer : MonoBehaviour
 {
-    
+
     void DestroyGameObject()
     {
-        // Hapus objek ini
         Destroy(gameObject);
     }
 }

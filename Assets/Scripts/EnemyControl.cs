@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemyControl : MonoBehaviour
 {
-    public float speed; // Kecepatan gerakan musuh
+    public float speed;
     public GameObject Explode;
 
-    GameScore gameScore; // Langsung refer ke script, bukan GameObject
+    GameScore gameScore;
 
     void Start()
     {
@@ -37,19 +37,17 @@ public class EnemyControl : MonoBehaviour
     {
         if (col.CompareTag("PlayerShipTag") || col.CompareTag("PlayerBulletTag"))
         {
-            // Tampilkan ledakan
+
             if (Explode != null)
             {
                 Instantiate(Explode, transform.position, Quaternion.identity);
             }
 
-            // Tambah skor
             if (gameScore != null)
             {
                 gameScore.Score += 100;
             }
 
-            // Hancurkan musuh
             Destroy(gameObject);
         }
     }

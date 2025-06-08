@@ -903,7 +903,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1358073437}
         m_TargetAssemblyTypeName: SceneManage, Assembly-CSharp
-        m_MethodName: gamePlay
+        m_MethodName: GamePlay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class EnemyGun : MonoBehaviour
 {
-    public GameObject EnemyBullet; // Prefab peluru musuh
-    public float fireRate = 2f;    // Jeda waktu antar tembakan
+    public GameObject EnemyBullet;
+    public float fireRate = 2f;
 
     void Start()
     {
-        Invoke("FireEnemyBullet", fireRate); // Mulai tembakan pertama
+        Invoke("FireEnemyBullet", fireRate);
     }
 
     void FireEnemyBullet()
@@ -20,12 +20,10 @@ public class EnemyGun : MonoBehaviour
             GameObject bullet = Instantiate(EnemyBullet);
             bullet.transform.position = transform.position;
 
-            // Hitung arah dalam 2D
-            Vector2 direction = (playerShip.transform.position - transform.position);
+            Vector2 direction = playerShip.transform.position - transform.position;
             bullet.GetComponent<EnemyBullet>().SetDirection(direction);
         }
 
-        // Jadwalkan tembakan berikutnya
         Invoke("FireEnemyBullet", fireRate);
     }
 }

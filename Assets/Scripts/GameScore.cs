@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameScore : MonoBehaviour
 {
-    public Text scoreText; // Assign lewat Inspector
+    public Text scoreText;
     private int score;
 
     public int Score
@@ -17,13 +17,13 @@ public class GameScore : MonoBehaviour
         set
         {
             score = value;
-            UpdateScoreUI(); // Update UI setiap kali score berubah
+            UpdateScoreUI();
         }
     }
 
     void Start()
     {
-        UpdateScoreUI(); // Pastikan skor awal ditampilkan
+        UpdateScoreUI();
     }
 
     void UpdateScoreUI()

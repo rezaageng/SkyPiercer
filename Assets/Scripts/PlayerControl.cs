@@ -155,10 +155,29 @@ public class PlayerControl : MonoBehaviour
                 healthDisplay != null &&
                 healthDisplay.playerHealth.health > 0)
             {
-                if (missionCompleteImage != null)
-                    missionCompleteImage.SetActive(true);
+                missionCompleteImage?.SetActive(true);
 
                 missionCompleted = true;
+
+                // --- AUTOSAVE LOGIC START ---
+                string currentScene = SceneManager.GetActiveScene().name;
+                int levelNumber = 0;
+                if (currentScene.StartsWith("GamePlay"))
+                {
+                    int.TryParse(currentScene.Substring("GamePlay".Length), out levelNumber);
+                }
+
+                if (levelNumber > 0)
+                {
+                    int highestLevelCompleted = PlayerPrefs.GetInt("HighestLevelCompleted", 0);
+                    if (levelNumber > highestLevelCompleted)
+                    {
+                        PlayerPrefs.SetInt("HighestLevelCompleted", levelNumber);
+                        PlayerPrefs.Save();
+                        Debug.Log("Game Saved! Highest level completed: " + levelNumber);
+                    }
+                }
+                // --- AUTOSAVE LOGIC END ---
 
                 // Pindah ke scene selanjutnya setelah delay
                 Invoke("LoadNextScene", 3f);
