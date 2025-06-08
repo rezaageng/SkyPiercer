@@ -1,25 +1,39 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; // Tambahkan ini
+using UnityEngine.SceneManagement;
 
 public class SceneManage : MonoBehaviour
 {
-    // Fungsi ini akan dipanggil dari Animation Event atau tombol
+    public AudioSource buttonAudio; // Drag AudioSource dari Inspector
+    public float delay = 0.3f; // Waktu delay sebelum pindah scene
+
     public void GantiScene()
     {
-        SceneManager.LoadScene("NamaScene"); // Ganti dengan nama scene kamu
+        StartCoroutine(LoadSceneWithDelay("NamaScene"));
     }
-    public void MainMenu(){
-        SceneManager.LoadScene("MainMenu"); // Ganti dengan nama scene kamu
+
+    public void MainMenu()
+    {
+        StartCoroutine(LoadSceneWithDelay("MainMenu"));
     }
-    
+
     public void Credit()
     {
-        SceneManager.LoadScene("Credit"); // Ganti dengan nama scene kamu
+        StartCoroutine(LoadSceneWithDelay("Credit"));
     }
+
     public void gamePlay()
     {
-        SceneManager.LoadScene("GamePlay1"); // Ganti dengan nama scene kamu
+        StartCoroutine(LoadSceneWithDelay("GamePlay1"));
+    }
+
+    private IEnumerator LoadSceneWithDelay(string sceneName)
+    {
+        if (buttonAudio != null)
+        {
+            buttonAudio.Play();
+        }
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene(sceneName);
     }
 }
