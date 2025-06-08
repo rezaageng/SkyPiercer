@@ -1,20 +1,18 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI; // Required for UI components like Button
+using UnityEngine.UI;
 
 public class SceneManage : MonoBehaviour
 {
-    public Button continueButton; // Assign your "Continue" button from the Inspector
+    public Button continueButton;
 
     void Start()
     {
-        // Check if a level has been completed.
         int highestLevelCompleted = PlayerPrefs.GetInt("HighestLevelCompleted", 0);
 
         if (highestLevelCompleted == 0)
         {
-            // If no level has been completed, hide the continue button.
             if (continueButton != null)
             {
                 continueButton.gameObject.SetActive(false);
@@ -22,7 +20,6 @@ public class SceneManage : MonoBehaviour
         }
         else
         {
-            // If a level has been completed, show the continue button.
             if (continueButton != null)
             {
                 continueButton.gameObject.SetActive(true);
@@ -30,13 +27,18 @@ public class SceneManage : MonoBehaviour
         }
     }
 
-    // This function will be called by your "Continue" button
     public void ContinueGame()
     {
+        StartCoroutine(LoadContinueGame());
+    }
+
+    private IEnumerator LoadContinueGame()
+    {
+        yield return new WaitForSeconds(0.3f);
+
         int highestLevelCompleted = PlayerPrefs.GetInt("HighestLevelCompleted", 0);
         int levelToLoad = highestLevelCompleted + 1;
 
-        // If all levels are completed, loop back to level 1
         if (levelToLoad > 3)
         {
             levelToLoad = 1;
@@ -55,10 +57,14 @@ public class SceneManage : MonoBehaviour
         }
     }
 
-    // This function can be used for a "New Game" button
     public void gamePlay()
     {
-        // Optional: Reset progress when starting a new game
+        StartCoroutine(LoadGamePlay());
+    }
+
+    private IEnumerator LoadGamePlay()
+    {
+        yield return new WaitForSeconds(0.3f);
         PlayerPrefs.DeleteKey("HighestLevelCompleted");
         PlayerPrefs.Save();
         SceneManager.LoadScene("GamePlay1");
@@ -66,12 +72,17 @@ public class SceneManage : MonoBehaviour
 
     public void MainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        StartCoroutine(LoadSceneWithDelay("MainMenu"));
     }
-
 
     public void Credit()
     {
-        SceneManager.LoadScene("Credit");
+        StartCoroutine(LoadSceneWithDelay("Credit"));
+    }
+
+    private IEnumerator LoadSceneWithDelay(string sceneName)
+    {
+        yield return new WaitForSeconds(0.3f);
+        SceneManager.LoadScene(sceneName);
     }
 }
