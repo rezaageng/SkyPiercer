@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI; // Required for UI components like Button
@@ -69,6 +68,7 @@ public class SceneManage : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+
 
     public void Credit()
     {
