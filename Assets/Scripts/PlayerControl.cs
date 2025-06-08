@@ -28,6 +28,8 @@ public class PlayerControl : MonoBehaviour
     private float originalFireRate;
     private Coroutine bulletBuffCoroutine;
 
+    private AudioSource moveAudio;
+
     void Start()
     {
         originalFireRate = fireRate;
@@ -39,6 +41,8 @@ public class PlayerControl : MonoBehaviour
         max = new Vector2(topRight.x - 0.225f, topRight.y - 0.285f);
 
         targetPosition = transform.position;
+
+        moveAudio = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -56,7 +60,21 @@ public class PlayerControl : MonoBehaviour
         );
 
         if (newPosition != currentPosition)
+        {
             hasMovedThisFrame = true;
+
+            if (!moveAudio.isPlaying)
+            {
+                moveAudio.Play();
+            }
+        }
+        else
+        {
+            if (moveAudio.isPlaying)
+            {
+                moveAudio.Stop();
+            }
+        }
 
         if (hasMovedThisFrame && Time.time >= nextFireTime)
         {
@@ -79,7 +97,6 @@ public class PlayerControl : MonoBehaviour
         if (missionCompleteImage != null)
             missionCompleteImage.SetActive(true);
 
-        // Autosave progress
         string currentScene = SceneManager.GetActiveScene().name;
         int levelNumber = 0;
         if (int.TryParse(currentScene.Substring("GamePlay".Length), out levelNumber))
