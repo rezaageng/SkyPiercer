@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 238390703148600202}
   - component: {fileID: 2754961789615132519}
   - component: {fileID: 4830850322388599541}
+  - component: {fileID: -2892734453809980018}
   m_Layer: 0
   m_Name: BigBoss
   m_TagString: Untagged
@@ -265,7 +266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyBullet: {fileID: 8024153812693289572, guid: ab49e2daa95e9b9488a14e057c601909, type: 3}
-  fireRate: 2
+  fireRate: 0.6
   numberOfBullets: 3
   spreadAngle: 45
 --- !u!114 &2754961789615132519
@@ -296,3 +297,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   changeDirectionTime: 2
+--- !u!114 &-2892734453809980018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 653963502901629238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee11d337340b8949bbb3bea5bb35fed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyBullet: {fileID: 8024153812693289572, guid: ab49e2daa95e9b9488a14e057c601909, type: 3}
+  fireRate: 4
+  numberOfBullets: 7
+  spreadAngle: 180

@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 3802143100116726729}
   - component: {fileID: 8135713069735063244}
   - component: {fileID: -5823132176794388988}
-  - component: {fileID: 7086035761177199305}
   - component: {fileID: -2964298019185003052}
   - component: {fileID: 2295287604838761191}
   - component: {fileID: -156541498280378634}
+  - component: {fileID: 7086035761177199305}
   m_Layer: 0
   m_Name: Hytam
   m_TagString: Untagged
@@ -149,22 +149,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 200
   explosionPrefab: {fileID: 3317383099801801767, guid: e215d8e87b2241e4bb0c88a67e672463, type: 3}
---- !u!114 &7086035761177199305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6708085489191793860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ee11d337340b8949bbb3bea5bb35fed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EnemyBullet: {fileID: 4473951872048651971, guid: d38f0d4afaf36f5469693a683cb01e75, type: 3}
-  fireRate: 4
-  numberOfBullets: 10
-  spreadAngle: 180
 --- !u!114 &-2964298019185003052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +161,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 466808458fcecb44d8613faefbbcef30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.5
+  moveSpeed: 2
+  changeDirectionTime: 2
 --- !u!82 &2295287604838761191
 AudioSource:
   m_ObjectHideFlags: 0
@@ -290,3 +275,19 @@ MonoBehaviour:
   fireRate: 0.6
   numberOfBullets: 5
   spreadAngle: 10
+--- !u!114 &7086035761177199305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6708085489191793860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee11d337340b8949bbb3bea5bb35fed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyBullet: {fileID: 4473951872048651971, guid: d38f0d4afaf36f5469693a683cb01e75, type: 3}
+  fireRate: 4
+  numberOfBullets: 10
+  spreadAngle: 180
