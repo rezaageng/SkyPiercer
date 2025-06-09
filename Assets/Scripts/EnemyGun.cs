@@ -6,7 +6,7 @@ public class EnemyGun : MonoBehaviour
     public GameObject EnemyBullet;
     public float fireRate = 2f;
 
-    public int numberOfBullets = 5; // Jumlah peluru dalam satu spread
+    public int numberOfBullets = 3; // Jumlah peluru dalam satu spread
     public float spreadAngle = 45f; // Sudut total spread peluru
 
     private Coroutine fireRoutine;
