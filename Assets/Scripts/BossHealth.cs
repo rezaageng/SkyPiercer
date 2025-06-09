@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class BossHealth : MonoBehaviour
 {
-    public int health = 100; // High health for the boss
+    public int health = 100;
     public GameObject explosionPrefab;
     private GameScore gameScore;
 
     void Start()
     {
-        // Find the GameScore script in the scene to update the score
         GameObject scoreUIObj = GameObject.FindGameObjectWithTag("ScoreTextTag");
         if (scoreUIObj != null)
         {
@@ -27,7 +26,6 @@ public class BossHealth : MonoBehaviour
         }
     }
 
-    // What happens when the boss's health reaches zero
     void Die()
     {
         if (explosionPrefab != null)
@@ -40,7 +38,7 @@ public class BossHealth : MonoBehaviour
             gameScore.Score += 1000;
         }
 
-        // --- NEW: Directly trigger level completion ---
+
         PlayerControl playerControl = FindObjectOfType<PlayerControl>();
         if (playerControl != null)
         {
@@ -51,13 +49,12 @@ public class BossHealth : MonoBehaviour
     }
 
 
-    // Detect collision with player bullets
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.CompareTag("PlayerBulletTag"))
         {
-            TakeDamage(1); // Reduce health by 1 for each bullet hit
-            Destroy(col.gameObject); // Destroy the player's bullet
+            TakeDamage(1);
+            Destroy(col.gameObject);
         }
     }
 }

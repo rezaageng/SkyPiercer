@@ -12,6 +12,7 @@ TagManager:
   - HP3
   - HP1
   - ScoreTextTag
+  - Buff
   layers:
   - Default
   - TransparentFX

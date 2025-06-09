@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerBullet : MonoBehaviour
 {
     readonly float speed = 8f;
-
     void Update()
     {
         Vector2 position = transform.position;

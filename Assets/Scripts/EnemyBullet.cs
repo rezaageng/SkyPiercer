@@ -8,9 +8,6 @@ public class EnemyBullet : MonoBehaviour
     Vector2 direction;
     bool isReady = false;
 
-
-
-
     public void SetDirection(Vector2 dir)
     {
         direction = dir.normalized;
@@ -42,5 +39,4 @@ public class EnemyBullet : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
 }

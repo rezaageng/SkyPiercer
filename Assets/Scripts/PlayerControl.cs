@@ -6,25 +6,20 @@ using UnityEngine.SceneManagement;
 public class PlayerControl : MonoBehaviour
 {
     public float speed = 5f;
-
     public GameObject PlayerBulletGo;
     public GameObject BulletPosition_1;
     public GameObject BulletPosition_2;
-
     public GameObject gameOverImage;
     public GameObject missionCompleteImage;
-
     public EnemySpawner enemySpawner;
     public float fireRate = 0.2f;
     public GameObject Explode;
     public HealthDisplay healthDisplay;
-
     private Vector2 min, max, targetPosition;
     private bool hasMovedThisFrame = false;
     private float nextFireTime = 0f;
     private bool missionCompleted = false;
     private bool isPlayerDead = false;
-
     private float originalFireRate;
     private Coroutine bulletBuffCoroutine;
 

@@ -6,10 +6,8 @@ using UnityEngine.SceneManagement;
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyGo;
-    public GameObject bossPrefab; // Assign the Boss prefab in the Inspector
-
+    public GameObject bossPrefab;
     public float maxSpawnRateInSecond = 5f;
-
     private float spawnEndTime = 30f;
     private float timer = 0f;
     private bool spawningEnded = false;
@@ -41,31 +39,27 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-        // --- NEW: Level 1 Completion Check ---
-        // This check is only for Level 1, as bosses handle completion in other levels.
         string sceneName = SceneManager.GetActiveScene().name;
         if (sceneName == "GamePlay1" && spawningEnded)
         {
-            // Check if all enemies with the tag are defeated.
             if (GameObject.FindGameObjectWithTag("EnemyShipTag") == null)
             {
                 PlayerControl playerControl = FindObjectOfType<PlayerControl>();
                 if (playerControl != null)
                 {
                     playerControl.TriggerLevelComplete();
-                    enabled = false; // Disable this script to prevent it from running again.
+                    enabled = false;
                 }
             }
         }
     }
 
-
     void SpawnBoss()
     {
         if (bossPrefab != null)
         {
-            // Set the spawn position to be just above the top-center of the screen
-            Vector3 viewportSpawnPoint = new Vector3(0.5f, 1.1f, 0); // y = 1.1 is just off-screen
+
+            Vector3 viewportSpawnPoint = new Vector3(0.5f, 1.1f, 0);
 
             float distanceFromCamera = Mathf.Abs(Camera.main.transform.position.z);
             viewportSpawnPoint.z = distanceFromCamera;
@@ -75,8 +69,6 @@ public class EnemySpawner : MonoBehaviour
             spawnedBoss = Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
             spawnedBoss.transform.position = new Vector3(spawnedBoss.transform.position.x, spawnedBoss.transform.position.y, 0);
 
-            // If the boss has an EnemyGun script, disable it initially.
-            // It will be enabled by BossMovement.cs when it reaches the center.
             EnemyGun gun = spawnedBoss.GetComponent<EnemyGun>();
             if (gun != null)
             {
