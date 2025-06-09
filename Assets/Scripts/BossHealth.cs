@@ -6,6 +6,10 @@ public class BossHealth : MonoBehaviour
     public GameObject explosionPrefab;
     private GameScore gameScore;
 
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
+    private Coroutine flashCoroutine;
+
     void Start()
     {
         GameObject scoreUIObj = GameObject.FindGameObjectWithTag("ScoreTextTag");
@@ -13,12 +17,28 @@ public class BossHealth : MonoBehaviour
         {
             gameScore = scoreUIObj.GetComponent<GameScore>();
         }
+
+        // Ambil SpriteRenderer dan simpan warna aslinya
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            originalColor = spriteRenderer.color;
+        }
     }
 
     // Method to be called when the boss is hit
     public void TakeDamage(int amount)
     {
         health -= amount;
+
+        // Efek warna gelap saat terkena tembakan
+        if (spriteRenderer != null)
+        {
+            if (flashCoroutine != null)
+                StopCoroutine(flashCoroutine);
+
+            flashCoroutine = StartCoroutine(FlashColor());
+        }
 
         if (health <= 0)
         {
@@ -38,7 +58,6 @@ public class BossHealth : MonoBehaviour
             gameScore.Score += 1000;
         }
 
-
         PlayerControl playerControl = FindObjectOfType<PlayerControl>();
         if (playerControl != null)
         {
@@ -48,7 +67,6 @@ public class BossHealth : MonoBehaviour
         Destroy(gameObject);
     }
 
-
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.CompareTag("PlayerBulletTag"))
@@ -56,5 +74,15 @@ public class BossHealth : MonoBehaviour
             TakeDamage(1);
             Destroy(col.gameObject);
         }
+    }
+
+    // Coroutine untuk membuat warna boss menjadi gelap sementara
+    System.Collections.IEnumerator FlashColor()
+    {
+        spriteRenderer.color = new Color(originalColor.r * 0.5f, originalColor.g * 0.5f, originalColor.b * 0.5f);
+
+        yield return new WaitForSeconds(0.1f);
+
+        spriteRenderer.color = originalColor;
     }
 }
