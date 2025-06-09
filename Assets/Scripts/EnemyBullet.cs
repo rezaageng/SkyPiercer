@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    readonly float speed = 8f;
+    readonly float speed = 5f;
     Vector2 direction;
     bool isReady = false;
 
