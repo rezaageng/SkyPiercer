@@ -2,37 +2,52 @@ using UnityEngine;
 
 public class BossMovement : MonoBehaviour
 {
-    public float speed = 2.5f;
-    private Vector3 targetPosition;
-    private bool hasReachedCenter = false;
+    public float moveSpeed = 2f;
+    public float changeDirectionTime = 2f;
+
+    private Vector2 movementDirection;
+    private float timer;
+
+    private Vector2 minBounds;
+    private Vector2 maxBounds;
 
     void Start()
     {
-        Vector3 viewportTargetPoint = new Vector3(0.5f, 0.75f, 0);
+        Vector2 min = Camera.main.ViewportToWorldPoint(new Vector2(0, 0));
+        Vector2 max = Camera.main.ViewportToWorldPoint(new Vector2(1, 1));
 
-        float distanceFromCamera = Mathf.Abs(Camera.main.transform.position.z);
-        viewportTargetPoint.z = distanceFromCamera;
+        // Atur area gerak boss agar tidak terlalu lebar & tidak terlalu sempit
+        float horizontalArea = (max.x - min.x) * 0.6f; // 60% area horizontal (bisa diubah 0.5f - 0.7f sesuai selera)
+        float centerX = (min.x + max.x) / 2f;
 
-        targetPosition = Camera.main.ViewportToWorldPoint(viewportTargetPoint);
-        targetPosition.z = 0;
+        float verticalTop = max.y - 1f;     // batas atas boss
+        float verticalBottom = max.y - 3f;  // batas bawah boss (tidak terlalu turun ke player)
+
+        minBounds = new Vector2(centerX - horizontalArea / 2f, verticalBottom);
+        maxBounds = new Vector2(centerX + horizontalArea / 2f, verticalTop);
+
+        PickNewDirection();
     }
 
     void Update()
     {
-        if (!hasReachedCenter)
+        timer += Time.deltaTime;
+        if (timer >= changeDirectionTime)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
-
-            if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
-            {
-                hasReachedCenter = true;
-
-                EnemyGun gun = GetComponent<EnemyGun>();
-                if (gun != null)
-                {
-                    gun.enabled = true;
-                }
-            }
+            PickNewDirection();
         }
+
+        Vector2 newPosition = (Vector2)transform.position + movementDirection * moveSpeed * Time.deltaTime;
+
+        newPosition.x = Mathf.Clamp(newPosition.x, minBounds.x, maxBounds.x);
+        newPosition.y = Mathf.Clamp(newPosition.y, minBounds.y, maxBounds.y);
+
+        transform.position = newPosition;
+    }
+
+    void PickNewDirection()
+    {
+        movementDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-0.3f, 0.3f)).normalized;
+        timer = 0f;
     }
 }

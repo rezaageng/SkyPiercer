@@ -58,14 +58,11 @@ public class EnemySpawner : MonoBehaviour
     {
         if (bossPrefab != null)
         {
-
             Vector3 viewportSpawnPoint = new Vector3(0.5f, 1.1f, 0);
-
             float distanceFromCamera = Mathf.Abs(Camera.main.transform.position.z);
             viewportSpawnPoint.z = distanceFromCamera;
 
             Vector3 spawnPosition = Camera.main.ViewportToWorldPoint(viewportSpawnPoint);
-
             spawnedBoss = Instantiate(bossPrefab, spawnPosition, Quaternion.identity);
             spawnedBoss.transform.position = new Vector3(spawnedBoss.transform.position.x, spawnedBoss.transform.position.y, 0);
 
@@ -73,9 +70,22 @@ public class EnemySpawner : MonoBehaviour
             if (gun != null)
             {
                 gun.enabled = false;
+                Invoke(nameof(ActivateBossGun), 2f); // Boss menembak setelah 2 detik
             }
 
             bossSpawned = true;
+        }
+    }
+
+    void ActivateBossGun()
+    {
+        if (spawnedBoss != null)
+        {
+            EnemyGun gun = spawnedBoss.GetComponent<EnemyGun>();
+            if (gun != null)
+            {
+                gun.enabled = true;
+            }
         }
     }
 
@@ -108,13 +118,6 @@ public class EnemySpawner : MonoBehaviour
             CancelInvoke("IncreaseSpawnRate");
     }
 
-    public bool IsSpawningFinished()
-    {
-        return spawningEnded;
-    }
-
-    public bool IsBossSpawned()
-    {
-        return bossSpawned;
-    }
+    public bool IsSpawningFinished() => spawningEnded;
+    public bool IsBossSpawned() => bossSpawned;
 }

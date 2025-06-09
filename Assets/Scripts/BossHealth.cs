@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BossHealth : MonoBehaviour
 {
-    public int health = 100;
+    public int health = 150;
     public GameObject explosionPrefab;
     private GameScore gameScore;
 
