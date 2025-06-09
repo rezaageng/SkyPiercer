@@ -161,7 +161,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyBullet: {fileID: 4473951872048651971, guid: d38f0d4afaf36f5469693a683cb01e75, type: 3}
-  fireRate: 2
+  fireRate: 1
+  numberOfBullets: 7
+  spreadAngle: 35
 --- !u!114 &-2964298019185003052
 MonoBehaviour:
   m_ObjectHideFlags: 0
