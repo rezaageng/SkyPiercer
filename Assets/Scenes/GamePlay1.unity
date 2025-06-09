@@ -845,7 +845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e50c3891e2a4a8d41b0de2ca5ee68228, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyGo: {fileID: 6335477594885853588, guid: 9f607c79cb6369f46af09841994b33c9, type: 3}
+  enemyGo: {fileID: 7034742929720858354, guid: 9f607c79cb6369f46af09841994b33c9, type: 3}
   bossPrefab: {fileID: 0}
   maxSpawnRateInSecond: 5
   spawnedBoss: {fileID: 0}

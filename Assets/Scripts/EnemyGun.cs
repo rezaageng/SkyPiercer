@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class EnemyGun : MonoBehaviour
 {
-    public GameObject EnemyBullet;
-    public float fireRate = 2f;
+    [Header("Bullet Settings")]
+    public GameObject EnemyBullet;     // Prefab peluru musuh
+    public float fireRate = 1f;        // Waktu jeda antar tembakan
 
-    public int numberOfBullets = 3; // Jumlah peluru dalam satu spread
-    public float spreadAngle = 45f; // Sudut total spread peluru
+    [Header("Spread Settings")]
+    public int numberOfBullets = 3;    // Jumlah peluru dalam satu spread
+    public float spreadAngle = 45f;    // Total sudut spread (derajat)
 
     private Coroutine fireRoutine;
 
@@ -38,11 +40,12 @@ public class EnemyGun : MonoBehaviour
         GameObject playerShip = GameObject.Find("PlayerGo");
         if (playerShip == null) return;
 
+        // Arah ke pemain
         Vector2 directionToPlayer = (playerShip.transform.position - transform.position).normalized;
 
-        // Menghitung sudut awal spread
+        // Hitung sudut antar peluru
         float angleStep = (numberOfBullets > 1) ? spreadAngle / (numberOfBullets - 1) : 0f;
-        float startAngle = -spreadAngle / 2;
+        float startAngle = -spreadAngle / 2f;
 
         for (int i = 0; i < numberOfBullets; i++)
         {

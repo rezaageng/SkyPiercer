@@ -29,7 +29,7 @@ public class EnemyBullet : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-        }
+        }   
     }
 
     void OnTriggerEnter2D(Collider2D col)
