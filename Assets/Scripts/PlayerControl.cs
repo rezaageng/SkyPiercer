@@ -15,6 +15,7 @@ public class PlayerControl : MonoBehaviour
     public float fireRate = 0.2f;
     public GameObject Explode;
     public HealthDisplay healthDisplay;
+
     private Vector2 min, max, targetPosition;
     private bool hasMovedThisFrame = false;
     private float nextFireTime = 0f;
@@ -22,8 +23,6 @@ public class PlayerControl : MonoBehaviour
     private bool isPlayerDead = false;
     private float originalFireRate;
     private Coroutine bulletBuffCoroutine;
-
-    private AudioSource moveAudio;
 
     void Start()
     {
@@ -36,8 +35,6 @@ public class PlayerControl : MonoBehaviour
         max = new Vector2(topRight.x - 0.225f, topRight.y - 0.285f);
 
         targetPosition = transform.position;
-
-        moveAudio = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -57,18 +54,6 @@ public class PlayerControl : MonoBehaviour
         if (newPosition != currentPosition)
         {
             hasMovedThisFrame = true;
-
-            if (!moveAudio.isPlaying)
-            {
-                moveAudio.Play();
-            }
-        }
-        else
-        {
-            if (moveAudio.isPlaying)
-            {
-                moveAudio.Stop();
-            }
         }
 
         if (hasMovedThisFrame && Time.time >= nextFireTime)

@@ -8,7 +8,7 @@ public class EnemySpawner : MonoBehaviour
     public GameObject enemyGo;
     public GameObject bossPrefab;
     public float maxSpawnRateInSecond = 5f;
-    private float spawnEndTime = 30f;
+    private float spawnEndTime = 40f;
     private float timer = 0f;
     private bool spawningEnded = false;
     private bool bossSpawned = false;
