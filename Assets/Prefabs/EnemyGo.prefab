@@ -162,5 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   Explode: {fileID: 3317383099801801767, guid: e215d8e87b2241e4bb0c88a67e672463, type: 3}
-  buffPrefabs: []
+  buffPrefabs:
+  - {fileID: 3886022389475010313, guid: 66ad4e9cdf86fc44d9643d55509de5b9, type: 3}
+  - {fileID: 3886022389475010313, guid: 4794aa5e658c1b54cac1a7674d6c0fbb, type: 3}
   buffDropChance: 0.1

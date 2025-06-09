@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7978129376808862589}
   - component: {fileID: 5065904536196448266}
   - component: {fileID: 8456880463313438344}
-  - component: {fileID: 2597049387432898334}
   - component: {fileID: 4372749841794316937}
   m_Layer: 0
   m_Name: EnemyGo2
@@ -149,20 +148,6 @@ MonoBehaviour:
   fireRate: 2
   numberOfBullets: 3
   spreadAngle: 45
---- !u!114 &2597049387432898334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 122896830650811180}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 466808458fcecb44d8613faefbbcef30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 2
-  changeDirectionTime: 2
 --- !u!114 &4372749841794316937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,5 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   Explode: {fileID: 3317383099801801767, guid: e215d8e87b2241e4bb0c88a67e672463, type: 3}
-  buffPrefabs: []
+  buffPrefabs:
+  - {fileID: 3886022389475010313, guid: 4794aa5e658c1b54cac1a7674d6c0fbb, type: 3}
+  - {fileID: 3886022389475010313, guid: 66ad4e9cdf86fc44d9643d55509de5b9, type: 3}
   buffDropChance: 0.1
