@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7086035761177199305}
   - component: {fileID: -2964298019185003052}
   - component: {fileID: 2295287604838761191}
+  - component: {fileID: -156541498280378634}
   m_Layer: 0
   m_Name: Hytam
   m_TagString: Untagged
@@ -161,7 +162,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyBullet: {fileID: 4473951872048651971, guid: d38f0d4afaf36f5469693a683cb01e75, type: 3}
-  fireRate: 2
+  fireRate: 4
+  numberOfBullets: 10
+  spreadAngle: 180
 --- !u!114 &-2964298019185003052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,3 +274,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-156541498280378634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6708085489191793860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ee11d337340b8949bbb3bea5bb35fed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyBullet: {fileID: 4473951872048651971, guid: d38f0d4afaf36f5469693a683cb01e75, type: 3}
+  fireRate: 0.6
+  numberOfBullets: 5
+  spreadAngle: 10
