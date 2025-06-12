@@ -3,7 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - PlayerShipTag
+  - EnemyShipTag
+  - PlayerBulletTag
+  - EnemyBulletTag
+  - HP2
+  - HP3
+  - HP1
+  - ScoreTextTag
+  - Buff
   layers:
   - Default
   - TransparentFX
