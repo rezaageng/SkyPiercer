@@ -18,7 +18,6 @@ public class BossHealth : MonoBehaviour
             gameScore = scoreUIObj.GetComponent<GameScore>();
         }
 
-        // Ambil SpriteRenderer dan simpan warna aslinya
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
         {
@@ -26,12 +25,10 @@ public class BossHealth : MonoBehaviour
         }
     }
 
-    // Method to be called when the boss is hit
     public void TakeDamage(int amount)
     {
         health -= amount;
 
-        // Efek warna gelap saat terkena tembakan
         if (spriteRenderer != null)
         {
             if (flashCoroutine != null)
@@ -76,7 +73,6 @@ public class BossHealth : MonoBehaviour
         }
     }
 
-    // Coroutine untuk membuat warna boss menjadi gelap sementara
     System.Collections.IEnumerator FlashColor()
     {
         spriteRenderer.color = new Color(originalColor.r * 0.5f, originalColor.g * 0.5f, originalColor.b * 0.5f);

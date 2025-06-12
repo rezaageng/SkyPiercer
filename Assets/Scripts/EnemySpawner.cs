@@ -70,7 +70,7 @@ public class EnemySpawner : MonoBehaviour
             if (gun != null)
             {
                 gun.enabled = false;
-                Invoke(nameof(ActivateBossGun), 2f); // Boss menembak setelah 2 detik
+                Invoke(nameof(ActivateBossGun), 2f);
             }
 
             bossSpawned = true;

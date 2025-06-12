@@ -68,7 +68,6 @@ public class EnemyControl : MonoBehaviour
 
         if (buffPrefabs != null && buffPrefabs.Length > 0)
         {
-            // Pick a random buff from the array and spawn it at the enemy's position.
             int randomIndex = Random.Range(0, buffPrefabs.Length);
             Instantiate(buffPrefabs[randomIndex], transform.position, Quaternion.identity);
         }
